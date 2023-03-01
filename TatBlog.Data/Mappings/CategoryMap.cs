@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TatBlog.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TatBlog.Core.Entities;
 
 namespace TatBlog.Data.Mappings
 {
@@ -13,7 +13,7 @@ namespace TatBlog.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.ToTable("Categories");
+            builder.ToTable("Category");
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Name)
@@ -21,7 +21,8 @@ namespace TatBlog.Data.Mappings
                 .IsRequired();
 
             builder.Property(p => p.Description)
-                .HasMaxLength(500);
+                .HasMaxLength(50)
+                .IsRequired();
 
             builder.Property(p => p.UrlSlug)
                 .HasMaxLength(50)

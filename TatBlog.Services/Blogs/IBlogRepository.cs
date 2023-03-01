@@ -15,7 +15,7 @@ namespace TatBlog.Services.Blogs
             string slug,
             CancellationToken cancellationToken = default);
 
-        Task<IList<Post>> GetPupularArticlesAsync(
+        Task<IList<Post>> GetPopularArticlesAsync(
             int numPosts,
             CancellationToken cancellationToken= default);
 

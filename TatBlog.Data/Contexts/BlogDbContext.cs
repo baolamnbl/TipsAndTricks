@@ -14,10 +14,11 @@ namespace TatBlog.Data.Contexts
         public DbSet<Category> Categories { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=LAMCAIWINDAO\MSSQLSERVER01;Database=TatBlog;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true");
 
+        protected override void OnConfiguring(
+            DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=LAMCAIWINDAO\MSSQLSERVER01;Database=TatBlog;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

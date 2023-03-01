@@ -7,10 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TatBlog.Core.Entities;
 using TatBlog.Data.Contexts;
+using TatBlog.Data.Seeders;
 
 namespace TatBlog.Data.Seeders
 {
-    public class DataSeeder : IDateSeeder
+    public class DataSeeder:IDataSeeder
     {
         private readonly BlogDbContext _dbContext;
         public DataSeeder(BlogDbContext dbContext)
@@ -28,7 +29,7 @@ namespace TatBlog.Data.Seeders
             var posts = AddPosts(authors, categories, tags);
         }
 
-        private IList<Author> AddAuthors() 
+        private IList<Author> AddAuthors()
         {
             var authors = new List<Author>()
             {
@@ -70,7 +71,7 @@ namespace TatBlog.Data.Seeders
             return authors;
 
         }
-        private IList<Category> AddCategories() 
+        private IList<Category> AddCategories()
         {
             var categories = new List<Category>()
             {
@@ -86,7 +87,7 @@ namespace TatBlog.Data.Seeders
             _dbContext.SaveChanges();
             return categories;
         }
-        private IList<Tag> AddTags() 
+        private IList<Tag> AddTags()
         {
             var tags = new List<Tag>()
             {
@@ -106,7 +107,7 @@ namespace TatBlog.Data.Seeders
         private IList<Post> AddPosts(
             IList<Author> authors,
             IList<Category> categories,
-            IList<Tag> tags) 
+            IList<Tag> tags)
         {
             var posts = new List<Post>()
             {

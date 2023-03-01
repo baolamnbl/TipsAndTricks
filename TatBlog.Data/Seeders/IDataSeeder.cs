@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace TatBlog.Data.Seeders
 {
-    public interface IDateSeeder
+    public interface IDataSeeder
     {
         void Initialize();
     }

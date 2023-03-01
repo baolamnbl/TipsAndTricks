@@ -9,11 +9,12 @@ using TatBlog.Core.Entities;
 
 namespace TatBlog.Data.Mappings
 {
-    public class AuthorMap : IEntityTypeConfiguration<Author>
+    public class AuthorMap:IEntityTypeConfiguration<Author>
     {
         public void Configure(EntityTypeBuilder<Author> builder)
         {
             builder.ToTable("Authors");
+
             builder.HasKey(a => a.Id);
 
             builder.Property(a => a.FullName)
@@ -21,18 +22,13 @@ namespace TatBlog.Data.Mappings
                 .HasMaxLength(100);
 
             builder.Property(a => a.UrlSlug)
-                .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(100)
+                .IsRequired();
 
             builder.Property(a => a.ImageUrl)
-<<<<<<< HEAD
-=======
-                .IsRequired()
->>>>>>> 00ae9ff5883c384d6ad1097cc549f8187904c78d
                 .HasMaxLength(500);
 
             builder.Property(a => a.Email)
-                .IsRequired()
                 .HasMaxLength(150);
 
             builder.Property(a => a.JoinedDate)
