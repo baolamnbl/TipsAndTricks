@@ -12,9 +12,15 @@
   </ItemGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="Extensions\" />
     <Folder Include="Media\" />
     <Folder Include="Blogs\" />
+=======
+    <Folder Include="Blogs\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Media\" />
+>>>>>>> 00ae9ff5883c384d6ad1097cc549f8187904c78d
     <Folder Include="Rss\" />
   </ItemGroup>
 

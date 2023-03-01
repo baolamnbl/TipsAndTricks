@@ -11,8 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
+=======
+    <Folder Include="Contexts\" />
+    <Folder Include="Mappings\" />
+    <Folder Include="Seeders\" />
+>>>>>>> 00ae9ff5883c384d6ad1097cc549f8187904c78d
   </ItemGroup>
 
 </Project>

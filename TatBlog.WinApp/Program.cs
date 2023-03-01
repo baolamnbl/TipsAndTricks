@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using TatBlog.Data.Contexts;
 using TatBlog.Data.Seeders;
 
@@ -41,3 +42,7 @@ foreach(var post in posts)
 }
 
 
+=======
+﻿// See https://aka.ms/new-console-template for more information
+Console.WriteLine("Hello, World!");
+>>>>>>> 00ae9ff5883c384d6ad1097cc549f8187904c78d
