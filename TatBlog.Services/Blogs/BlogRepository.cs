@@ -110,5 +110,11 @@ namespace TatBlog.Services.Blogs
                 .ToPagedListAsync(pagingParams, cancellationToken);
         }
 
+        public async Task<Tag> GetTagFromSlugAsync(string slug, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Tag>()
+                .Where(t=>t.UrlSlug==slug)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }
