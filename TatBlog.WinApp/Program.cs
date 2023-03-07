@@ -3,10 +3,10 @@ using TatBlog.Data.Seeders;
 using TatBlog.Services.Blogs;
 using TatBlog.WinApp;
 
-var context = new BlogDbContext();
+//var context = new BlogDbContext();
 
-var seeder = new DataSeeder(context);
-seeder.Initialize();
+//var seeder = new DataSeeder(context);
+//seeder.Initialize();
 
 //var authors = context.Authors.ToList();
 
@@ -30,7 +30,7 @@ seeder.Initialize();
 //        Category = p.Category.Name,
 //    })
 //    .ToList();
-IBlogRepository blogRepo = new BlogRepository(context);
+//IBlogRepository blogRepo = new BlogRepository(context);
 
 //var posts = await blogRepo.GetPopularArticlesAsync(3);
 
@@ -64,12 +64,14 @@ IBlogRepository blogRepo = new BlogRepository(context);
 
 //var tagsList = await blogRepo.GetPagedTagsAsync(pagingParams);
 
-Console.WriteLine("{0,-5}{1,-50}{2,10}", "ID", "Name", "Count");
+//Console.WriteLine("{0,-5}{1,-50}{2,10}", "ID", "Name", "Count");
 
 //foreach(var item in tagsList)
 //{
 //    Console.WriteLine("{0,-5}{1,-50}{2,10}",item.Id,item.Name,item.PostCount);
 //}
 
-var tag = await blogRepo.GetTagFromSlugAsync("google");
-Console.WriteLine("{0,-5}{1,-50}{2,10}", tag.Id, tag.Name, tag.Description);
+//var tag = await blogRepo.GetTagFromSlugAsync("google");
+//Console.WriteLine("{0,-5}{1,-50}{2,10}", tag.Id, tag.Name, tag.Description);
+
+
