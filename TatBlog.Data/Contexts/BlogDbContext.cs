@@ -21,9 +21,14 @@ namespace TatBlog.Data.Contexts
             optionsBuilder
                 .UseSqlServer(@"Server=LAMCAIWINDAO\MSSQLSERVER01;Database=TatBlog;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True");
         }
+        public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
+        {
+
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CategoryMap).Assembly);
         }
+
     }
 }

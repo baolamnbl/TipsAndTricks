@@ -1,0 +1,28 @@
+﻿@model IPagedList<Post>
+
+@{
+    ViewData["PageTitle"] = "Trang chủ";
+    var postQuery = (ViewBag.PostQuery as PostQuery) ?? new PostQuery();
+}
+
+@*<h1>
+    Đây là trang chủ
+</h1>
+
+<p>
+    Bây giờ là :@ViewBag.CurrentTime
+</p>*@
+
+<div class="p-4">
+    @if (!string.IsNullOrWhiteSpace(postQuery.keyWord))
+    {
+        <h3 class="text-primary mb-3">
+            Những bài viết chứa từ khoá '@postQuery.keyWord'
+        </h3>
+    }
+    @foreach(var postItem in Model)
+    {
+        <partial name="_PostItem" model="postItem"/>
+    }
+    <partial name="_Pager" model="@Model"/>
+</div>
