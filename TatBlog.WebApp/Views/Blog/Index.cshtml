@@ -22,7 +22,7 @@
     }
     @foreach(var postItem in Model)
     {
-        <partial name="_PostItem" model="postItem"/>
+        @await Html.PartialAsync("_PostList", postItem)
     }
     <partial name="_Pager" model="@Model"/>
 </div>

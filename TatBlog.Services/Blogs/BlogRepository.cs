@@ -117,7 +117,7 @@ namespace TatBlog.Services.Blogs
                 .FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<IPagedList> GetPageAsync(PostQuery condition, int pageNumber = 1, int pageSize = 5, CancellationToken cancellationToken = default)
+        public async Task<IPagedList> GetPagedPostsAsync(PostQuery condition, int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default)
         {
             return await FilterPosts(condition).ToPagedListAsync(
                 pageNumber, pageSize,
@@ -193,9 +193,9 @@ namespace TatBlog.Services.Blogs
             return posts;
         }
 
-        public Task<IPagedList> GetPagedPostsAsync(PostQuery condition, int pageNumber, int pageSize, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
+        //public Task<IPagedList> GetPagedPostsAsync(PostQuery condition, int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
