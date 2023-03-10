@@ -7,6 +7,10 @@ namespace TatBlog.WebApp.Extensions
         public static IEndpointRouteBuilder UseBlogRoutes(this IEndpointRouteBuilder endpoints)
         {
             endpoints.MapControllerRoute(
+                name: "posts-by-author",
+                pattern: "blog/author/{name}",
+                defaults: new { controller = "Blog", action = "Author" });
+            endpoints.MapControllerRoute(
                 name: "posts-by-category",
                 pattern: "blog/category/{slug}",
                 defaults: new { controller = "Blog", action = "Category" });
@@ -14,14 +18,14 @@ namespace TatBlog.WebApp.Extensions
                 name: "posts-by-tag",
                 pattern: "blog/tag/{slug}",
                 defaults: new { controller = "Blog", action = "Tag" });
-                        endpoints.MapControllerRoute(
-                name: "posts-by-tag",
-                pattern: "blog/tag/{slug}",
-                defaults: new { controller = "Blog", action = "Tag" });
-            endpoints.MapControllerRoute(
-                name: "posts-by-tag",
-                pattern: "blog/tag/{slug}",
-                defaults: new { controller = "Blog", action = "Tag" });
+            //            endpoints.MapControllerRoute(
+            //    name: "posts-by-tag",
+            //    pattern: "blog/tag/{slug}",
+            //    defaults: new { controller = "Blog", action = "Tag" });
+            //endpoints.MapControllerRoute(
+            //    name: "posts-by-tag",
+            //    pattern: "blog/tag/{slug}",
+            //    defaults: new { controller = "Blog", action = "Tag" });
             endpoints.MapControllerRoute(
                 name: "single-post",
                 pattern: "blog/post/{year:int}/{month:int}/{day:int}/{slug}",
@@ -29,6 +33,7 @@ namespace TatBlog.WebApp.Extensions
             endpoints.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Blog}/{action=Index}/{id?}");
+
             return endpoints;
         }
     }
