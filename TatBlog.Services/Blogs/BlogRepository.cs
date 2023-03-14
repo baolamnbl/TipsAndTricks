@@ -92,6 +92,25 @@ namespace TatBlog.Services.Blogs
                 })
                 .ToListAsync(cancellationToken);
         }
+        public async Task<IList<AuthorItem>> GetAuthorsAsync(CancellationToken cancellationToken = default)
+        {
+            IQueryable<Author> authors = _context.Set<Author>();
+            
+            return await authors
+                .OrderBy(x => x.FullName)
+                .Select(x => new AuthorItem()
+                {
+                    Id = x.Id,
+                    FullName = x.FullName,
+                    UrlSlug = x.UrlSlug,
+                    Email = x.Email,
+                    JoinedDate = x.JoinedDate,
+                    Notes = x.Notes,
+                    PostCount = x.Posts.Count(p => p.Published)
+
+                })
+                .ToListAsync(cancellationToken);
+        }
         public async Task<IPagedList<TagItem>> GetPagedTagsAsync(
         IPagingParams pagingParams,
         CancellationToken cancellationToken = default)
@@ -191,6 +210,11 @@ namespace TatBlog.Services.Blogs
             }
 
             return posts;
+        }
+
+        public Task GetAuthorAsync()
+        {
+            throw new NotImplementedException();
         }
 
         //public Task<IPagedList> GetPagedPostsAsync(PostQuery condition, int pageNumber, int pageSize, CancellationToken cancellationToken = default)
