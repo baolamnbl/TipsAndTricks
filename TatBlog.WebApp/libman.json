@@ -21,6 +21,15 @@
     {
       "library": "font-awesome@4.7.0",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "speakingurl@14.0.1",
+      "destination": "wwwroot/lib/speakingurl/",
+      "files": [
+        "README.md",
+        "speakingurl.min.js",
+        "LICENSE"
+      ]
     }
   ]
 }

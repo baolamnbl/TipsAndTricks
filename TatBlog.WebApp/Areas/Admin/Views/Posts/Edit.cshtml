@@ -134,4 +134,13 @@
 @section scripts
 {
     <partial name="_ValidationScriptsPartial" />
+   @* <script src="~/lib/speakingurl/speakingurl.min.js"></script>
+    <script>
+        $(function () {
+            $('#Title').change(function () {
+                var slug = getSlug(this.value);
+                $('#UrlSlug').val(slug).trigger('blur')
+            });
+        });
+    </script>*@
 }

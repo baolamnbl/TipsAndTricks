@@ -120,7 +120,6 @@ namespace TatBlog.Data.Seeders
                     UrlSlug="aspdotnet-core",
                     Published=true,
                     PostedDate=new DateTime(2021,9,30,10,20,0),
-                    ModifiedDate=null,
                     ViewCount=10,
                     Author=authors[0],
                     Category=categories[0],
