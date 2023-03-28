@@ -33,6 +33,12 @@ namespace TatBlog.WebApp.Properties.Controllers
             ViewBag.PostQuery= postQuery;
             return View(postsList);
         }
+        public async Task<IActionResult> Post(
+            string slug, int month, int year)
+        {
+            var post = await _blogRepository.GetPostAsync(year, month, slug);
+            return View(post);
+        }
     }
 
     

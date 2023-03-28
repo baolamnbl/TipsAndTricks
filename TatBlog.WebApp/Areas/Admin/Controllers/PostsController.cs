@@ -20,18 +20,19 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
         private readonly IBlogRepository _blogRepository;
         private readonly IMediaManager _mediaManager;
         private readonly IMapper _mapper;
-        public PostsController(ILogger<PostsController> logger, IBlogRepository blogRepository, IMapper mapper, IMediaManager mediaManager)
+        private readonly IAuthorRepository _authorRepository;
+        public PostsController(ILogger<PostsController> logger, IBlogRepository blogRepository, IMapper mapper, IMediaManager mediaManager, IAuthorRepository authorRepository)
         {
             _logger = logger;
             _blogRepository = blogRepository;
             _mapper = mapper;
             _mediaManager = mediaManager;
-            
+            _authorRepository = authorRepository;
 
         }
 
 
-        public async Task<IActionResult> Index(PostFilterModel model)
+        public async Task<IActionResult> Index(PostFilterModel model, [FromQuery(Name = "p")] int pageNumber=1, [FromQuery(Name ="ps")] int pageSize=2)
         {
             //var postQuery = new PostQuery()
             //{
@@ -45,14 +46,14 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             var postQuery = _mapper.Map<PostQuery>(model);
             _logger.LogInformation("Lấy danh sách bài viết từ cơ sở dữ liệu");
             ViewBag.PostsList = await _blogRepository
-                .GetPagedPostsAsync(postQuery, 1, 10);
+                .GetPagedPostsAsync(postQuery, pageNumber, pageSize);
             _logger.LogInformation("Chuẩn bị dữ liệu cho ViewModel");
             await PopulatePostFilterModelAsync(model);
             return View(model);
         }
         private async Task PopulatePostFilterModelAsync(PostFilterModel model)
         {
-            var authors = await _blogRepository.GetAuthorsAsync();
+            var authors = await _authorRepository.GetAuthorsAsync();
             var categories = await _blogRepository.GetCategoriesAsync();
 
             model.AuthorList = authors.Select(a => new SelectListItem()
@@ -82,7 +83,7 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
 
         private async Task PopulatePostEditModelAsync(PostEditModel model)
         {
-            var authors = await _blogRepository.GetAuthorsAsync();
+            var authors = await _authorRepository.GetAuthorsAsync();
             var categories = await _blogRepository.GetCategoriesAsync();
 
             model.AuthorList = authors.Select(a => new SelectListItem()
@@ -98,7 +99,8 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             });
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(IValidator<PostEditModel> postValidator,
+        public async Task<IActionResult> Edit(
+            [FromServices] IValidator<PostEditModel> postValidator,
             PostEditModel model)
         {
             var validationResult=await postValidator.ValidateAsync(model);
@@ -141,6 +143,13 @@ namespace TatBlog.WebApp.Areas.Admin.Controllers
             await _blogRepository
                 .CreateOrUpdatePostAsync(post, model.GetSelectedTags());
             return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> VerifyPostSlug(int id, string urlSlug)
+        {
+            var slugExisted = await _blogRepository.IsPostSlugExistedAsync(id, urlSlug);
+            return slugExisted
+                ? Json($"Slug '{urlSlug}'đã được sử dụng"):Json(true);
         }
         
     }

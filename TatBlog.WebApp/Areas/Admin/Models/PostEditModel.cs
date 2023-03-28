@@ -24,7 +24,7 @@ namespace TatBlog.WebApp.Areas.Admin.Models
         
         public string? Meta { get; set; }
         [DisplayName("Slug")]
-        [Remote("VerifyPostSlug","Posts","Admin",HttpMethod ="POST",AdditionalFields ="Id")]
+        //[Remote("VerifyPostSlug","Posts","Admin",HttpMethod ="POST",AdditionalFields ="Id")]
         
         public string? UrlSlug { get; set; }
         [DisplayName("Chọn hình ảnh")]
@@ -38,7 +38,7 @@ namespace TatBlog.WebApp.Areas.Admin.Models
         public int CategoryId { get; set; }
         [DisplayName("Tác giả")]
         
-        public bool AuthorId { get; set; }
+        public int AuthorId { get; set; }
         [DisplayName("Từ khoá(mỗi từ 1 dòng)")]
         
         public string? SelectedTags { get; set; }

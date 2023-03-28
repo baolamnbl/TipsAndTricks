@@ -43,7 +43,7 @@ namespace TatBlog.Services.Blogs
             PostQuery condition, int pageNumber, int pageSize,
             CancellationToken cancellationToken = default);
         Task GetAuthorAsync();
-        Task<IList<AuthorItem>> GetAuthorsAsync(CancellationToken cancellationToken = default);
+        //Task<IList<AuthorItem>> GetAuthorsAsync(CancellationToken cancellationToken = default);
         Task<Post> GetPostByIdAsync(
         int postId, bool includeDetails = false,
         CancellationToken cancellationToken = default);
@@ -52,5 +52,10 @@ namespace TatBlog.Services.Blogs
         Task<Post> CreateOrUpdatePostAsync(
         Post post, IEnumerable<string> tags,
         CancellationToken cancellationToken = default);
+        Task<IList<Post>> GetFeaturePostAysnc(
+          int numberPost,
+          CancellationToken cancellationToken = default);
+        Task<IList<Post>> GetRandomArticlesAsync(
+        int numPosts, CancellationToken cancellationToken = default);
     }
 }

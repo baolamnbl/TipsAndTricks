@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Blogs\" />
     <Folder Include="Rss\" />
   </ItemGroup>
 

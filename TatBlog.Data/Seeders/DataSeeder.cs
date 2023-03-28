@@ -125,11 +125,50 @@ namespace TatBlog.Data.Seeders
                     Category=categories[0],
                     Tags=new List<Tag>()
                     {
-                        tags[0]
+                        tags[1]
+                    }
+
+
+                },
+                new()
+                {
+                    Title="ASP.Net Core Diagnostic Scenarios",
+                    ShortDescription="David and friends has great reposibility",
+                    Description="Here's a few great DON'T and DO",
+                    Meta="David and friends has great reposibility",
+                    UrlSlug="aspdotnet-core",
+                    Published=true,
+                    PostedDate=new DateTime(2021,9,30,10,20,0),
+                    ViewCount=10,
+                    Author=authors[3],
+                    Category=categories[4],
+                    Tags=new List<Tag>()
+                    {
+                        tags[3]
+                    }
+
+
+                },
+                new()
+                {
+                    Title="ASP.Net Core Diagnostic Scenarios",
+                    ShortDescription="David and friends has great reposibility",
+                    Description="Here's a few great DON'T and DO",
+                    Meta="David and friends has great reposibility",
+                    UrlSlug="aspdotnet-core",
+                    Published=true,
+                    PostedDate=new DateTime(2021,9,30,10,20,0),
+                    ViewCount=10,
+                    Author=authors[0],
+                    Category=categories[0],
+                    Tags=new List<Tag>()
+                    {
+                        tags[1]
                     }
 
 
                 }
+
             };
             _dbContext.AddRange(posts);
             _dbContext.SaveChanges();
