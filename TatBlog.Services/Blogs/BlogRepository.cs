@@ -4,6 +4,7 @@ using TatBlog.Core.DTO;
 using TatBlog.Core.Entities;
 using TatBlog.Data.Contexts;
 using TatBlog.Services.Extensions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TatBlog.Services.Blogs
 {
@@ -308,6 +309,13 @@ namespace TatBlog.Services.Blogs
                 .OrderBy(x => Guid.NewGuid())
                 .Take(numPosts)
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task<IPagedList<T>> GetPagedPostsAsync<T>(PostQuery query, IPagingParams pagingParams, Func<IQueryable<Post>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+        {
+            IQueryable<T> result = mapper(FilterPosts(query));
+
+            return await result.ToPagedListAsync(pagingParams, cancellationToken);
         }
     }
 }
