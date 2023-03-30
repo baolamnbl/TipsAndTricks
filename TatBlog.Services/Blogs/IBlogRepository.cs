@@ -61,5 +61,16 @@ namespace TatBlog.Services.Blogs
           CancellationToken cancellationToken = default);
         Task<IList<Post>> GetRandomArticlesAsync(
         int numPosts, CancellationToken cancellationToken = default);
+        Task<IPagedList<T>> GetPagedCategorysAsync<T>(
+        Func<IQueryable<Category>, IQueryable<T>> mapper,
+        IPagingParams pagingParams,
+        string name = null,
+        CancellationToken cancellationToken = default);
+        Task<IPagedList<CategoryItem>> GetPagedCategorysAsync(
+        IPagingParams pagingParams,
+        string name = null,
+        CancellationToken cancellationToken = default);
+        Task<bool> AddOrUpdateAsync(
+        Category category, CancellationToken cancellationToken = default);
     }
 }

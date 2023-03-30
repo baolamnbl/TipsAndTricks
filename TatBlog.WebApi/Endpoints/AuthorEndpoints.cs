@@ -37,26 +37,22 @@ namespace TatBlog.WebApi.Endpoints
             routeGroupBuilder.MapPost("/", AddAuthor)
                 .WithName("AddNewAuthor")
                 .AddEndpointFilter<ValidatorFilter<AuthorEditModel>>()
-                .RequireAuthorization()
                 .Produces(401)
                 .Produces<ApiResponse<AuthorItem>>();
 
             routeGroupBuilder.MapPost("/{id:int}/avatar", SetAuthorPicture)
                 .WithName("SetAuthorPicture")
-                .RequireAuthorization()
                 .Accepts<IFormFile>("multipart/form-data")
                 .Produces(401)
                 .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapPut("/{id:int}", UpdateAuthor)
                 .WithName("UpdateAuthor")
-                .RequireAuthorization()
                 .Produces(401)
                 .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapDelete("/{id:int}", DeleteAuthor)
                 .WithName("DeleteAuthor")
-                .RequireAuthorization()
                 .Produces(401)
                 .Produces<ApiResponse<string>>();
 

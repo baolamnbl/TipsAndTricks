@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using TatBlog.Core.Contracts;
 using TatBlog.Core.DTO;
 using TatBlog.Core.Entities;
@@ -11,6 +12,7 @@ namespace TatBlog.Services.Blogs
     public class BlogRepository : IBlogRepository
     {
         private readonly BlogDbContext _context;
+        private readonly IMemoryCache _memoryCache;
         public BlogRepository(BlogDbContext context)
         {
             _context = context;
@@ -316,6 +318,92 @@ namespace TatBlog.Services.Blogs
             IQueryable<T> result = mapper(FilterPosts(query));
 
             return await result.ToPagedListAsync(pagingParams, cancellationToken);
+        }
+        public async Task<IPagedList<T>> GetPagedCategorysAsync<T>(
+        Func<IQueryable<Category>, IQueryable<T>> mapper,
+        IPagingParams pagingParams,
+        string name = null,
+        CancellationToken cancellationToken = default)
+        {
+            var categoryQuery = _context.Set<Category>().AsNoTracking();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                categoryQuery = categoryQuery.Where(x => x.Name.Contains(name));
+            }
+
+            return await mapper(categoryQuery)
+                .ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+        public async Task<IPagedList<CategoryItem>> GetPagedCategorysAsync(
+        IPagingParams pagingParams,
+        string name = null,
+        CancellationToken cancellationToken = default)
+        {
+            IQueryable<Category> a = _context.Categories.AsNoTracking();
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                a = a.Where(x => x.Name.Contains(name));
+            }
+            return await a.Select(a => new CategoryItem()
+            {
+                Id = a.Id,
+                Name = a.Name,
+                ShowOnMenu = a.ShowOnMenu,
+                Description = a.Description,
+                UrlSlug = a.UrlSlug,
+                PostCount = a.Posts.Count(p => p.Published)
+            }).ToPagedListAsync(pagingParams, cancellationToken);
+        }
+        public async Task<Category> GetCategoryBySlugAsync(
+        string slug,
+        CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Category>()
+                .Where(t => t.UrlSlug == slug)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+        public async Task<Category> GetCachedCategoryBySlugAsync(
+        string slug, CancellationToken cancellationToken = default)
+        {
+            return await _memoryCache.GetOrCreateAsync(
+                $"category.by-slug.{slug}",
+                async (entry) =>
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
+                    return await GetCategoryBySlugAsync(slug, cancellationToken);
+                });
+        }
+        public async Task<Category> GetCategoryByIdAsync(int categoryId)
+        {
+            return await _context.Set<Category>().FindAsync(categoryId);
+        }
+        public async Task<Category> GetCachedCategoryByIdAsync(int categoryId)
+        {
+            return await _memoryCache.GetOrCreateAsync(
+                $"author.by-id.{categoryId}",
+                async (entry) =>
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
+                    return await GetCategoryByIdAsync(categoryId);
+                });
+        }
+        public async Task<bool> AddOrUpdateAsync(
+        Category category, CancellationToken cancellationToken = default)
+        {
+            if (category.Id > 0)
+            {
+                _context.Categories.Update(category);
+                _memoryCache.Remove($"category.by-id.{category.Id}");
+            }
+            else
+            {
+                _context.Categories.Add(category);
+            }
+
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
     }
 }
