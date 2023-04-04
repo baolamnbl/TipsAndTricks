@@ -1,0 +1,61 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<header >
+    <nav class="navbar navbar-expand-sm
+         navbar-toggleable-sm navbar-light
+         bg-white border-bottom box shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand"
+               asp-area=""
+               asp-controller="blog"
+               asp-action="Index">
+                Tips & Tricks
+            </a>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toogle="collapse"
+                    data-bs-target=".narbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toogle navigation">
+                <span class="narbar-toogler-icon"></span>
+            </button>
+
+            <div class="narbar-collapse collapse
+                 d-sm-inline-flex
+                 justify-content-between">
+                <ul class="navbar-nar flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"
+                           asp-area=""
+                           asp-controller="Blog"
+                           asp-action="Contact"
+                           title="Xem thông tin liên lạc và góp ý">
+                            Liên hệ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"
+                           asp-area=""
+                           asp-controller="Blog"
+                           asp-action="About"
+                           title="Thông tin về TAT Blog">
+                            Giới thiệu
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"
+                           asp-area=""
+                           asp-controller="Blog"
+                           asp-action="Rss"
+                           title="Tải danh sách bài viết mới">
+                            RSS Feed
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

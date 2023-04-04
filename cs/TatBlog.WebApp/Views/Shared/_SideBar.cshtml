@@ -1,0 +1,11 @@
+﻿<div class="my-4">
+    <partial name="_SearchForm"/>
+    @await Component.InvokeAsync("CategoriesWidget")
+
+    @await Component.InvokeAsync("FeaturedPosts")
+    @await Component.InvokeAsync("RandomPosts")
+
+    <h1>
+        Tag cloud
+    </h1>
+</div>
