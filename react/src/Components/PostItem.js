@@ -19,7 +19,11 @@ const PostList = ({ postItem }) => {
                         <Card.Body>
                             <Card.Title>{postItem.title}</Card.Title>
                             <Card.Text>
-                                <small className='text-muted'>Tác giả</small>
+                                <small className='text-muted'>Tác giả:</small>
+                                <span className='text-primary m-1'>
+                                    {postItem.author.fullName}
+                                </span>
+                                <small className='text-muted'>Chủ đề:</small>
                                 <span className='text-primary m-1'>
                                     {postItem.category.name}
                                 </span>
@@ -31,7 +35,7 @@ const PostList = ({ postItem }) => {
                                 <TagList tagList={postItem.tags} />
                             </div>
                             <div className='text-end'>
-                                <Link to={`/blog/post?year=${postedDate.getFullYear()}&month=${postedDate.getMonth()}$day=${postedDate.getDate()}&slug=${postItem.urlSlug}`}
+                                <Link to={`/blog/post?year=${postedDate.getFullYear()}&month=${postedDate.getMonth()}&day=${postedDate.getDay()}&slug=${postItem.urlSlug}`}
                                     className='btn btn-primary'
                                     title={postItem.title}>
                                     Xem chi tiết
@@ -42,7 +46,7 @@ const PostList = ({ postItem }) => {
                 </div>
             </Card>
         </article>
-    );
-};
+    )
+}
 
 export default PostList;

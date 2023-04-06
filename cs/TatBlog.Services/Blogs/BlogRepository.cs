@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using System.Threading;
 using TatBlog.Core.Contracts;
 using TatBlog.Core.DTO;
 using TatBlog.Core.Entities;
@@ -404,6 +405,48 @@ namespace TatBlog.Services.Blogs
             }
 
             return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+        public async Task<Post> GetCachedPostByIdAsync(int postId)
+        {
+            return await _memoryCache.GetOrCreateAsync(
+                $"post.by-id.{postId}",
+                async (entry) =>
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30);
+                    return await GetPostByIdAsync(postId);
+                });
+        }
+        public async Task<bool> SetImageUrlAsync(
+        int postId, string imageUrl,
+        CancellationToken cancellationToken = default)
+        {
+            return await _context.Posts
+                .Where(x => x.Id == postId)
+                .ExecuteUpdateAsync(x =>
+                    x.SetProperty(a => a.ImageUrl, a => imageUrl),
+                    cancellationToken) > 0;
+        }
+        public async Task<bool> DeletePostAsync(int postId, CancellationToken cancellationToken = default)
+        {
+            var post = await _context.Set<Post>().FindAsync(postId);
+
+            if (!post.Published) return false;
+
+            _context.Set<Post>().Remove(post);
+            var rowsCount = await _context.SaveChangesAsync(cancellationToken);
+
+            return rowsCount > 0;
+        }
+
+        public async Task<bool> AddOrUpdateAsync(Post post, CancellationToken cancellationToken = default)
+        {
+            _context.Entry(post).State = post.Id == 0 ? EntityState.Added : EntityState.Modified;
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public Task AddOrUpdateAsync(Post post)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -72,5 +72,12 @@ namespace TatBlog.Services.Blogs
         CancellationToken cancellationToken = default);
         Task<bool> AddOrUpdateAsync(
         Category category, CancellationToken cancellationToken = default);
+        Task<Post> GetCachedPostByIdAsync(int postId);
+        //Task AddOrUpdateAsync(Post post);
+        Task<bool> SetImageUrlAsync(
+        int postId, string imageUrl,
+        CancellationToken cancellationToken = default);
+        Task<bool> DeletePostAsync(int postId, CancellationToken cancellationToken = default);
+        Task<bool> AddOrUpdateAsync(Post post, CancellationToken cancellationToken = default);
     }
 }

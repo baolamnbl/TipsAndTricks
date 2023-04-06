@@ -1,32 +1,54 @@
 import React, { useEffect, useState } from "react";
-import PostItem from '../Components/PostItem';
+import PostItem from "../Components/PostItem";
 import { getPosts } from "../Services/BlogRepository";
-
+import Pager from "../Components/Pager";
+import { useLocation } from "react-router-dom";
 const Index = () => {
     const [postList, setPostList] = useState([]);
-    useEffect(() => {
-        document.title = 'Trang chủ';
+    const [metadata, setMetadata] = useState([]);
 
-        getPosts().then(data => {
-            if (data)
+    function useQuery() {
+        const { search } = useLocation();
+        return React.useMemo(() => new URLSearchParams(search), [search]);
+    }
+
+    let query = useQuery(),
+        k = query.get('k') ?? '',
+        p = query.get('p') ?? 1,
+        ps = query.get('ps') ?? 10;
+
+    useEffect(() => {
+        document.title = "Trang chủ";
+        getPosts().then((data) => {
+            console.log(data)
+            if (data) {
+                console.log(data)
                 setPostList(data.items);
-            else
+                setMetadata(data.metadata);
+            } else
                 setPostList([]);
         })
-    }, []);
-    if (postList.length > 0)
+    }, [k, p, ps]);
+
+    if (postList.length > 0) {
         return (
             <div className="p-4">
-                {postList.map(item, index => {
+                {postList.map((item, index) => {
                     return (
-                        <PostItem postList={item} key={index} />
+                        <PostItem postItem={item} key={index} />
                     );
-                })};
+                })}
+                <Pager postQuery={{ 'keywork': k }} metadata={metadata} />
+
             </div>
         );
-    else return (
-        <></>
-    )
-}
+    } else {
+        return (
+            <>
+                <p>Không có bài viết nào!</p>
+            </>
+        );
+    }
+};
 
 export default Index;
