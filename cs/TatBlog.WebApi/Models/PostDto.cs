@@ -13,6 +13,7 @@
         public CategoryDto Category { get; set; }
         public AuthorDto Author { get; set; }
         public IList<TagDto> Tags { get; set; }
+        public bool Published { get; set; }
 
     }
 }

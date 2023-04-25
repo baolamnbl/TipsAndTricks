@@ -443,10 +443,19 @@ namespace TatBlog.Services.Blogs
             _context.Entry(post).State = post.Id == 0 ? EntityState.Added : EntityState.Modified;
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
-
-        public Task AddOrUpdateAsync(Post post)
+        public async Task<bool> IsCategoryExistSlugAsync(int id, string slug, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await _context.Set<Category>()
+                 .AnyAsync(x => x.Id != id && x.UrlSlug == slug, cancellationToken);
         }
+        public async Task<bool> IsTagExistSlugAsync(int id, string slug, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Tag>()
+                 .AnyAsync(x => x.Id != id && x.UrlSlug == slug, cancellationToken);
+        }
+        //public Task AddOrUpdateAsync(Post post)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

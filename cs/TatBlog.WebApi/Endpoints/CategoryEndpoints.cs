@@ -24,31 +24,32 @@ namespace TatBlog.WebApi.Endpoints
 
             routeGroupBuilder.MapGet("/{id:int}", GetCategoryDetails)
                 .WithName("GetCategoryById")
-                .Produces<ApiResponse<AuthorItem>>()
-                .Produces(404);
+                .Produces<ApiResponse<PaginationResult<AuthorItem>>>();
 
             routeGroupBuilder.MapGet("/{slug:regex(^[a-z0-9_-]+$)}/posts", GetPostsByCategorySlug)
                 .WithName("GetPostsByCategorySlug")
                 .Produces<ApiResponse<PaginationResult<PostDto>>>();
 
-            //routeGroupBuilder.MapPost("/", AddCategory)
-            //    .WithName("AddCategory")
-            //    .AddEndpointFilter<ValidatorFilter<CategoryEditModel>>()
-            //    .Produces(401)
-            //    .Produces<ApiResponse<CategoryItem>>();
+            routeGroupBuilder.MapPost("/", AddCategory)
+            .WithName("AddNewCategory")
+            .AddEndpointFilter<ValidatorFilter<CategoryEditModel>>()
+            .Produces(401)
+            .Produces<ApiResponse<CategoryItem>>();
 
-            //routeGroupBuilder.MapPut("/{id:int}", UpdateCategory)
-            //    .WithName("UpdateCategory")
-            //    .Produces(401)
-            //    .Produces<ApiResponse<string>>();
+            routeGroupBuilder.MapPut("/{id:int}", UpdateCategory)
+            .WithName("UpdateACategory")
+            .AddEndpointFilter<ValidatorFilter<CategoryEditModel>>()
+            .Produces(401)
+            .Produces<ApiResponse<string>>();
             return app;
         }
         private static async Task<IResult> GetCategory([AsParameters] CategoryFilterModel model,
            IBlogRepository blogRepository)
         {
-            var categoriesList = await blogRepository.GetPagedCategorysAsync(model, model.Name);
-            var paginationResult = new PaginationResult<CategoryItem>(categoriesList);
-            return Results.Ok(ApiResponse.Success(paginationResult));
+            //var categoriesList = await blogRepository.GetPagedCategorysAsync(model, model.Name);
+            var categoriesList = await blogRepository.GetCategoriesAsync();
+            //var paginationResult = new PaginationResult<CategoryItem>(categoriesList);
+            return Results.Ok(ApiResponse.Success(categoriesList));
         }
         private static async Task<IResult> GetCategoryDetails(int id,
             IAuthorRepository authorRepository,
@@ -77,35 +78,40 @@ namespace TatBlog.WebApi.Endpoints
         private static async Task<IResult> AddCategory(
             CategoryEditModel model,
             IValidator<CategoryEditModel> validator,
-            IBlogRepository blogRepository,
+            IBlogRepository blogResponsitory,
             IMapper mapper)
         {
-            if (await blogRepository.IsPostSlugExistedAsync(0, model.UrlSlug))
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug '{model.UrlSlug}' da su dung"));
-            }
 
+            if (await blogResponsitory.IsCategoryExistSlugAsync(0, model.UrlSlug))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug '{model.UrlSlug} đã được sử dụng"));
+
+            }
             var category = mapper.Map<Category>(model);
-            await blogRepository.AddOrUpdateAsync(category);
+            await blogResponsitory.AddOrUpdateAsync(category);
             return Results.Ok(ApiResponse.Success(mapper.Map<CategoryItem>(category), HttpStatusCode.Created));
+
         }
-        private static async Task<IResult> UpdateCategory(int id, CategoryEditModel model, IValidator<CategoryEditModel> validator, IBlogRepository blogRepository, IMapper mapper)
+        private static async Task<IResult> UpdateCategory(int id, CategoryEditModel model, IValidator<CategoryEditModel> validator, IBlogRepository blogResponsitory, IMapper mapper)
         {
             var validationResult = await validator.ValidateAsync(model);
             if (!validationResult.IsValid)
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, validationResult));
             }
-            if (await blogRepository.IsPostSlugExistedAsync(id, model.UrlSlug))
+
+            if (await blogResponsitory.IsCategoryExistSlugAsync(id, model.UrlSlug))
             {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug 'model.UrlSlug' da duoc su dung"));
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug {model.UrlSlug} đã được sử dụng"));
             }
+
             var category = mapper.Map<Category>(model);
             category.Id = id;
-            return await blogRepository.AddOrUpdateAsync(category)
-                ? Results.Ok(ApiResponse.Success("Author is update", HttpStatusCode.NoContent))
-                : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Couldn't find category"));
-
+            return await blogResponsitory.AddOrUpdateAsync(category)
+                ? Results.Ok(ApiResponse.Success("Category is updated", HttpStatusCode.NoContent))
+                : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, "Could not find author"));
         }
+
     }
+    
 }
